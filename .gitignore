@@ -8,7 +8,6 @@
 # *.db
 *.pdf
 *.pkl
-*.md
 *.gguf
 *.faiss
 *.index
