@@ -1,0 +1,49 @@
+{
+    // 파일 인코딩 설정
+    "files.encoding": "utf8",
+    "files.autoGuessEncoding": false,
+
+    // Python 설정
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+
+    // JSON 설정
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.tabSize": 2
+    },
+
+    // TOML 설정
+    "[toml]": {
+        "editor.tabSize": 4
+    },
+
+    // 일반 에디터 설정
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.trimAutoWhitespace": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+
+    // 파일 연결
+    "files.associations": {
+        "*.py": "python",
+        "*.toml": "toml",
+        "*.json": "json",
+        "*.md": "markdown"
+    },
+
+    // Python 경로 설정
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/src"
+    ]
+}
