@@ -1,93 +1,13 @@
 """
-Graph Factory - LangGraph/LangChain 체인 생성
+Graph Factory - 시스템 인스턴스 생성 라우터
 
-사용자 선택에 따라 적절한 시스템(Chatbot/RAG/Agentic)을 생성하고 반환
+사용자 선택에 따라 적절한 시스템(RAG/Chat)을 생성하고 반환하는 Factory 모듈
 """
 
-import yaml
 import logging
 from typing import Any
 
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableWithMessageHistory
-
-from src.core.session_manager import get_session_history
-from src.config.config_model import DEFAULT_MODEL, DEFAULT_TEMPERATURE
-from src.core.prompts_service import PromptsService
-
 logger = logging.getLogger(__name__)
-
-
-# =============================================================================
-# Chatbot Chain 생성
-# =============================================================================
-
-def create_chatbot_chain(
-    prompt_file: str,
-    model: str = DEFAULT_MODEL,
-    task: str = "",
-    temperature: float = DEFAULT_TEMPERATURE,
-):
-    """
-    Chatbot Chain 생성
-
-    Args:
-        prompt_file: 프롬프트 파일 경로
-        model: LLM 모델명
-        task: 역할 설정 (선택사항)
-        temperature: 생성 온도
-
-    Returns:
-        RunnableWithMessageHistory: 대화 히스토리를 포함한 체인
-    """
-    # YAML 파일에서 프롬프트 로드
-    with open(prompt_file, "r", encoding="utf-8") as f:
-        prompt_data = yaml.safe_load(f)
-
-    # 템플릿 추출
-    template_text = prompt_data.get("template", "")
-
-    # 시스템 메시지 구성
-    if "#Question:" in template_text:
-        base_prompt = template_text.split("#Question:")[0].strip()
-    else:
-        base_prompt = template_text.replace("{question}", "").strip()
-
-    # Task 역할 추가
-    if task and task.strip():
-        system_message = (
-            f"{base_prompt}\n\n"
-            f"system role: {task}\n"
-            f"위 역할에 맞게 전문적으로 대답해주세요."
-        )
-    else:
-        system_message = base_prompt
-
-    # 프롬프트 템플릿 생성
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", system_message),
-        MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{question}"),
-    ])
-
-    # LLM 생성
-    from src.core.llm_service import create_llm_router
-    llm = create_llm_router(model=model, temperature=temperature)
-
-    # Chain 구성
-    chain = prompt | llm | StrOutputParser()
-
-    # 히스토리 포함 Chain
-    chain_with_history = RunnableWithMessageHistory(
-        chain,
-        get_session_history,
-        input_messages_key="question",
-        history_messages_key="chat_history",
-    )
-
-    logger.info(f"Created chatbot chain with model={model}")
-    return chain_with_history
 
 
 # =============================================================================
@@ -173,20 +93,14 @@ class GraphFactory:
         시스템 타입에 따른 인스턴스 생성
 
         Args:
-            system_type: 'chatbot', 'rag', 'chat'
+            system_type: 'rag', 'chat'
             session_id: 세션 ID
             **kwargs: 추가 설정
 
         Returns:
             해당 시스템 인스턴스
         """
-        if system_type == "chatbot":
-            prompt_file = kwargs.pop("prompt_file", None)
-            if not prompt_file:
-                raise ValueError("prompt_file is required for chatbot")
-            return create_chatbot_chain(prompt_file=prompt_file, **kwargs)
-
-        elif system_type == "rag":
+        if system_type == "rag":
             return create_rag_system(session_id=session_id, **kwargs)
 
         elif system_type == "chat":
@@ -195,10 +109,10 @@ class GraphFactory:
         else:
             raise ValueError(
                 f"Unknown system type: {system_type}. "
-                f"Must be one of ['chatbot', 'rag', 'chat']"
+                f"Must be one of ['rag', 'chat']"
             )
 
     @staticmethod
     def get_available_systems() -> list:
         """사용 가능한 시스템 타입 목록"""
-        return ["chatbot", "rag", "chat"]
+        return ["rag", "chat"]

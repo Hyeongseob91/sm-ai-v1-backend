@@ -3,7 +3,6 @@
 
 from .graph_factory import (
     GraphFactory,
-    create_chatbot_chain,
     create_rag_system,
     create_chat_system,
 )
@@ -22,7 +21,6 @@ from .prompts_service import PromptsService
 __all__ = [
     # Graph Factory
     "GraphFactory",
-    "create_chatbot_chain",
     "create_rag_system",
     "create_chat_system",
     # Session Manager
