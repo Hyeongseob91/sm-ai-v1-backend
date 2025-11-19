@@ -9,10 +9,13 @@ from typing import Dict, Any
 from dotenv import load_dotenv
 
 
+# .env 파일 로드
+load_dotenv()
+
+
 # =============================================================================
 # LLM 공급자 열거형
 # =============================================================================
-
 class LLMProvider(Enum):
     """
     LLM 공급자 열거형
@@ -25,14 +28,10 @@ class LLMProvider(Enum):
     GOOGLE = "google"
     VLLM = "vllm"
 
-# .env 파일 로드
-load_dotenv()
-
 
 # =============================================================================
 # API Keys
 # =============================================================================
-
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 LANGSMITH_API_KEY = os.getenv("LANGSMITH_API_KEY", "")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
@@ -126,7 +125,6 @@ EMBEDDINGS_DIR.mkdir(exist_ok=True)
 # =============================================================================
 # API 설정
 # =============================================================================
-
 API_PREFIX = "/api/v1"
 API_TITLE = "SM-AI Backend"
 API_VERSION = "0.2.0"
@@ -142,7 +140,6 @@ CORS_ORIGINS = [
 # =============================================================================
 # Logging 설정
 # =============================================================================
-
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
@@ -150,7 +147,6 @@ LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 # =============================================================================
 # LangSmith 설정 (Optional)
 # =============================================================================
-
 LANGSMITH_ENABLED = os.getenv("LANGSMITH_ENABLED", "false").lower() == "true"
 LANGSMITH_PROJECT = os.getenv("LANGSMITH_PROJECT", "sm-ai")
 

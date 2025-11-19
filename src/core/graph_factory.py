@@ -4,83 +4,19 @@ Graph Factory - LangGraph/LangChain 체인 생성
 사용자 선택에 따라 적절한 시스템(Chatbot/RAG/Agentic)을 생성하고 반환
 """
 
-import os
-import glob
 import yaml
 import logging
-from typing import Optional, Any
+from typing import Any
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableWithMessageHistory
 
 from src.core.session_manager import get_session_history
 from src.config.config_model import DEFAULT_MODEL, DEFAULT_TEMPERATURE
-from src.config.config_prompts import (
-    CHATBOT_PROMPTS_DIR,
-    RAG_PROMPTS_DIR,
-    AGENTIC_PROMPTS_DIR,
-    get_prompt_files,
-)
+from src.core.prompts_service import PromptsService
 
 logger = logging.getLogger(__name__)
-
-
-# =============================================================================
-# Prompts 관리
-# =============================================================================
-
-def get_available_prompts(prompt_type: str) -> list:
-    """
-    사용 가능한 프롬프트 파일 목록 조회
-
-    Args:
-        prompt_type: 'chatbot', 'rag', 'agentic'
-
-    Returns:
-        프롬프트 파일 경로 리스트
-    """
-    prompt_dirs_map = {
-        "chatbot": CHATBOT_PROMPTS_DIR,
-        "rag": RAG_PROMPTS_DIR,
-        "agentic": AGENTIC_PROMPTS_DIR
-    }
-
-    try:
-        prompt_dir = prompt_dirs_map[prompt_type]
-        prompt_files = glob.glob(os.path.join(str(prompt_dir), "*.yaml"))
-        return sorted(prompt_files)
-
-    except KeyError:
-        valid_types = list(prompt_dirs_map.keys())
-        raise ValueError(
-            f"Invalid prompt type: '{prompt_type}'. "
-            f"Must be one of {valid_types}."
-        )
-
-
-def get_prompt_info(prompt_type: str, prompt_name: str) -> dict:
-    """
-    프롬프트 파일 정보 조회
-
-    Args:
-        prompt_type: 'chatbot', 'rag', 'agentic'
-        prompt_name: 프롬프트 파일 이름
-
-    Returns:
-        프롬프트 메타 정보
-    """
-    from src.config.config_prompts import load_prompt_content
-
-    content = load_prompt_content(prompt_type, prompt_name)
-
-    return {
-        "name": prompt_name,
-        "title": content.get("title", prompt_name),
-        "description": content.get("description", ""),
-        "template": content.get("template", ""),
-    }
 
 
 # =============================================================================
@@ -136,8 +72,8 @@ def create_chatbot_chain(
     ])
 
     # LLM 생성
-    from src.core.llm_service import create_llm
-    llm = create_llm(model=model, temperature=temperature)
+    from src.core.llm_service import create_llm_router
+    llm = create_llm_router(model=model, temperature=temperature)
 
     # Chain 구성
     chain = prompt | llm | StrOutputParser()

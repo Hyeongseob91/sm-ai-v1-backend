@@ -3,7 +3,6 @@
 
 from .graph_factory import (
     GraphFactory,
-    get_available_prompts,
     create_chatbot_chain,
     create_rag_system,
     create_chat_system,
@@ -16,13 +15,13 @@ from .session_manager import (
 )
 from .llm_service import (
     LLMService,
-    create_llm,
+    create_llm_router,
 )
+from .prompts_service import PromptsService
 
 __all__ = [
     # Graph Factory
     "GraphFactory",
-    "get_available_prompts",
     "create_chatbot_chain",
     "create_rag_system",
     "create_chat_system",
@@ -33,5 +32,7 @@ __all__ = [
     "session_exists",
     # LLM Service
     "LLMService",
-    "create_llm",
+    "create_llm_router",
+    # Prompts Service
+    "PromptsService",
 ]

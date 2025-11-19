@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional, AsyncIterator
 from dataclasses import dataclass
 import logging
 
-from src.core.llm_service import create_llm, LLMService
+from src.core.llm_service import LLMService
 from src.core.session_manager import get_session_history
 from src.config.config_model import DEFAULT_MODEL, DEFAULT_TEMPERATURE
 

@@ -13,11 +13,8 @@ from src.models.api_schema import (
     ChatResponse,
     ErrorResponse,
 )
-from src.core.graph_factory import (
-    create_chatbot_chain,
-    get_available_prompts,
-    get_prompt_info,
-)
+from src.core.graph_factory import create_chatbot_chain
+from src.core.prompts_service import PromptsService
 from src.core.session_manager import (
     clear_session,
     session_exists,
@@ -122,7 +119,7 @@ async def get_chat_prompts():
     사용 가능한 대화 프롬프트 목록
     """
     try:
-        prompts = get_available_prompts("chatbot")
+        prompts = PromptsService.list_prompt_files("chatbot")
         return {
             "prompts": prompts,
             "count": len(prompts)
@@ -138,7 +135,7 @@ async def get_chat_prompt_info(prompt_name: str):
     특정 프롬프트 정보 조회
     """
     try:
-        info = get_prompt_info("chatbot", prompt_name)
+        info = PromptsService.get_prompt_info("chatbot", prompt_name)
         return info
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail=f"Prompt not found: {prompt_name}")

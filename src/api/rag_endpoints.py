@@ -17,10 +17,8 @@ from src.models.api_schema import (
     RAGConfigUpdate,
     RAGUploadResponse,
 )
-from src.core.graph_factory import (
-    create_rag_system,
-    get_available_prompts,
-)
+from src.core.graph_factory import create_rag_system
+from src.core.prompts_service import PromptsService
 from src.config.config_model import FILES_DIR
 
 logger = logging.getLogger(__name__)
@@ -204,7 +202,7 @@ async def get_rag_prompts():
     사용 가능한 RAG 프롬프트 목록
     """
     try:
-        prompts = get_available_prompts("rag")
+        prompts = PromptsService.list_prompt_files("rag")
         return {
             "prompts": prompts,
             "count": len(prompts)

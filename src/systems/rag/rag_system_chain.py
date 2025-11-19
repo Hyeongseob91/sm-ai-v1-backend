@@ -10,8 +10,8 @@ import yaml
 from pathlib import Path
 
 from src.models.base_models import Document, DocumentChunk, RAGContext
-from src.core.llm_service import create_llm
-from src.config.config_prompts import get_prompt_path, load_prompt_content
+from src.core.llm_service import create_llm_router
+from src.core.prompts_service import PromptsService
 from src.config.config_model import DEFAULT_MODEL, DEFAULT_TEMPERATURE
 
 from .constants import (
@@ -171,7 +171,7 @@ class RAGSystemChain:
 
         # 4. LLM 호출
         if self._llm is None:
-            self._llm = create_llm(
+            self._llm = create_llm_router(
                 model=self.config.model,
                 temperature=self.config.temperature
             )
@@ -214,7 +214,7 @@ class RAGSystemChain:
 
         # 4. LLM 스트리밍
         if self._llm is None:
-            self._llm = create_llm(
+            self._llm = create_llm_router(
                 model=self.config.model,
                 temperature=self.config.temperature,
                 streaming=True
@@ -254,7 +254,7 @@ class RAGSystemChain:
     def _load_prompt(self) -> str:
         """프롬프트 템플릿 로드"""
         try:
-            content = load_prompt_content("rag", self.config.prompt_name)
+            content = PromptsService.load_prompt("rag", self.config.prompt_name)
             template = content.get("template", "")
 
             # 기본 템플릿 형식 확인
