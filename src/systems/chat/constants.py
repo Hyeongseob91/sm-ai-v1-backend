@@ -37,20 +37,20 @@ FUNCTION_CALLING_MODELS = [
 # Tool 관련 상수
 # =============================================================================
 
-# 기본 활성 도구들
+# 기본 활성 도구들 (네이티브 유틸리티만)
+# 분석 도구들은 MCP 서버를 통해 제공
 DEFAULT_TOOLS = [
-    "data_analyzer",
-    "chart_generator",
     "report_formatter",
 ]
 
 # 도구 설명
 TOOL_DESCRIPTIONS = {
-    "data_analyzer": "데이터를 분석하고 통계 정보를 제공합니다.",
-    "chart_generator": "데이터를 시각화하여 차트를 생성합니다.",
     "report_formatter": "분석 결과를 보고서 형식으로 포맷합니다.",
-    "rag_tool": "문서 검색을 통해 관련 정보를 찾습니다.",
 }
+
+# MCP 관련 상수
+MCP_TOOL_PREFIX = "mcp_"  # MCP 도구 이름 접두사
+MCP_DEFAULT_TIMEOUT = 30.0  # MCP 기본 타임아웃 (초)
 
 
 # =============================================================================

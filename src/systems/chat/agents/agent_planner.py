@@ -42,11 +42,7 @@ class AgentPlanner:
         """사용 가능한 도구 설정"""
         self._available_tools = tools
 
-    async def create_plan(
-        self,
-        user_message: str,
-        context: Optional[str] = None
-    ) -> AgentPlan:
+    async def create_plan(self, user_message: str, context: Optional[str] = None) -> AgentPlan:
         """
         실행 계획 수립
 
@@ -64,24 +60,24 @@ class AgentPlanner:
         available_tools_str = ", ".join(self._available_tools) if self._available_tools else "None"
 
         planning_prompt = f"""
-{PLANNER_PROMPT.format(available_tools=available_tools_str)}
+        {PLANNER_PROMPT.format(available_tools=available_tools_str)}
 
-사용자 요청: {user_message}
-{f"추가 컨텍스트: {context}" if context else ""}
+        사용자 요청: {user_message}
+        {f"추가 컨텍스트: {context}" if context else ""}
 
-다음 JSON 형식으로 계획을 출력하세요:
-{{
-    "goal": "최종 목표",
-    "steps": [
+        다음 JSON 형식으로 계획을 출력하세요:
         {{
-            "step_number": 1,
-            "action": "수행할 작업 설명",
-            "tool": "사용할 도구 이름 또는 null",
-            "expected_output": "예상 결과"
+            "goal": "최종 목표",
+            "steps": [
+                {{
+                    "step_number": 1,
+                    "action": "수행할 작업 설명",
+                    "tool": "사용할 도구 이름 또는 null",
+                    "expected_output": "예상 결과"
+                }}
+            ]
         }}
-    ]
-}}
-"""
+        """
 
         try:
             # LLM 호출

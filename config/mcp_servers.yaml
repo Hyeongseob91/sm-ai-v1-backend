@@ -1,0 +1,109 @@
+# MCP Server Configuration
+# MCP 서버 설정 파일
+#
+# 이 파일에서 사용할 MCP 서버들을 설정합니다.
+# 각 서버는 독립적인 프로세스로 실행되며, 도구를 제공합니다.
+
+servers:
+  # =============================================================================
+  # 파일 시스템 서버
+  # =============================================================================
+  # filesystem:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-filesystem", "/workspace"]
+  #   timeout: 30
+  #   enabled: true
+
+  # =============================================================================
+  # 웹 Fetch 서버 (웹 페이지/API 호출)
+  # =============================================================================
+  # fetch:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-fetch"]
+  #   timeout: 45
+  #   enabled: true
+
+  # =============================================================================
+  # 데이터베이스 서버
+  # =============================================================================
+  # SQLite
+  # sqlite:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-sqlite", "--db-path", "./data/database.db"]
+  #   timeout: 30
+  #   enabled: true
+
+  # PostgreSQL
+  # postgres:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-postgres"]
+  #   env:
+  #     DATABASE_URL: "postgresql://user:password@localhost:5432/dbname"
+  #   timeout: 30
+  #   enabled: false
+
+  # =============================================================================
+  # 검색 서버
+  # =============================================================================
+  # Brave Search
+  # brave_search:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-brave-search"]
+  #   env:
+  #     BRAVE_API_KEY: "your-brave-api-key"
+  #   timeout: 30
+  #   enabled: false
+
+  # =============================================================================
+  # 개발 도구 서버
+  # =============================================================================
+  # GitHub
+  # github:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-github"]
+  #   env:
+  #     GITHUB_PERSONAL_ACCESS_TOKEN: "your-github-token"
+  #   timeout: 30
+  #   enabled: false
+
+  # =============================================================================
+  # 커뮤니케이션 서버
+  # =============================================================================
+  # Slack
+  # slack:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-slack"]
+  #   env:
+  #     SLACK_BOT_TOKEN: "xoxb-your-token"
+  #     SLACK_TEAM_ID: "your-team-id"
+  #   timeout: 30
+  #   enabled: false
+
+  # =============================================================================
+  # Python 기반 커스텀 서버
+  # =============================================================================
+  # custom_python:
+  #   command: "python"
+  #   args: ["-m", "my_mcp_server"]
+  #   env:
+  #     API_KEY: "your-api-key"
+  #   timeout: 60
+  #   enabled: true
+
+  # =============================================================================
+  # 메모리/저장소 서버
+  # =============================================================================
+  # memory:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-memory"]
+  #   timeout: 30
+  #   enabled: false
+
+  # =============================================================================
+  # 추론 지원 서버
+  # =============================================================================
+  # sequential_thinking:
+  #   command: "npx"
+  #   args: ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+  #   timeout: 60
+  #   enabled: false

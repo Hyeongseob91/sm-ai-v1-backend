@@ -112,13 +112,9 @@ def tool(name: str, description: str):
 
 
 def initialize_default_tools() -> None:
-    """기본 도구들 초기화"""
-    from .data_analyzer import DataAnalyzerTool
-    from .chart_generator import ChartGeneratorTool
+    """기본 도구들 초기화 (단순 유틸리티만)"""
     from .report_formatter import ReportFormatterTool
 
-    register_tool(DataAnalyzerTool())
-    register_tool(ChartGeneratorTool())
     register_tool(ReportFormatterTool())
 
-    logger.info("Initialized default tools")
+    logger.info("Initialized default tools (native utilities only)")
